@@ -1,9 +1,19 @@
 import React, { Component } from 'react';
-import './App.css';
+
+import AppContent from './components/AppContent';
+import FetchEbooksProvider from './components/FetchEbooksProvider';
+
+import { EbookProviderContext } from './context';
 
 class App extends Component {
   render() {
-    return <div className="App" />;
+    return (
+      <FetchEbooksProvider>
+        <EbookProviderContext.Consumer>
+          {context => <AppContent context={context} />}
+        </EbookProviderContext.Consumer>
+      </FetchEbooksProvider>
+    );
   }
 }
 
