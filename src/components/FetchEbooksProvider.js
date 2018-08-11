@@ -8,6 +8,12 @@ import { EbookProviderContext } from '../context';
 
 class FetchEbooksProvider extends PureComponent {
   state = {
+    inputs: [
+      {
+        fieldName: 'ebookName',
+        fieldType: 'text',
+      },
+    ],
     searchResults: [],
   };
 
