@@ -5,6 +5,8 @@ import { Button, Input } from 'antd';
 
 import strings from '../localization/app-locale';
 
+import { camelToTitleCase } from '../utils';
+
 const FIELD_TYPES = Object.freeze({
   TEXT: 'text',
 });
@@ -58,11 +60,6 @@ class Config extends PureComponent {
     );
   }
 }
-
-const camelToTitleCase = string => {
-  const result = string.replace(/([A-Z])/g, ' $1');
-  return result.charAt(0).toUpperCase() + result.slice(1);
-};
 
 Config.propTypes = {
   inputs: PropTypes.arrayOf(
