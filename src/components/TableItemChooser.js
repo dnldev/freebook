@@ -3,7 +3,11 @@ import PropTypes from 'prop-types';
 
 import { Button, Table } from 'antd';
 
-import strings from '../localization/app-locale';
+const styles = {
+  button: {
+    marginBottom: 4,
+  },
+};
 
 class TableItemChooser extends PureComponent {
   state = {
@@ -17,7 +21,15 @@ class TableItemChooser extends PureComponent {
   };
 
   render() {
-    const { columns, items, loading, size } = this.props;
+    const {
+      buttonText,
+      columns,
+      expandedRowRender,
+      items,
+      loading,
+      size,
+      tableLocale,
+    } = this.props;
     const { selectedRowKeys } = this.state;
     const rowSelection = {
       selectedRowKeys,
@@ -28,38 +40,45 @@ class TableItemChooser extends PureComponent {
 
     return (
       <React.Fragment>
+        <Button
+          style={styles.button}
+          disabled={!hasSelected}
+          loading={loading}
+          type="primary"
+          onClick={this.sendChosenItems}
+        >
+          {buttonText}
+        </Button>
+
         <Table
           columns={columns}
           dataSource={items}
+          expandedRowRender={expandedRowRender}
           rowSelection={rowSelection}
           loading={loading}
-          locale={strings.table}
+          locale={tableLocale}
           size={size}
         />
-
-        <Button
-          type="primary"
-          onClick={this.sendChosenItems}
-          disabled={!hasSelected}
-          loading={loading}
-        >
-          {strings.select}
-        </Button>
       </React.Fragment>
     );
   }
 }
 
 TableItemChooser.propTypes = {
+  buttonText: PropTypes.string.isRequired,
   chooseItems: PropTypes.func.isRequired,
   columns: PropTypes.array.isRequired,
+  expandedRowRender: PropTypes.func,
   items: PropTypes.array.isRequired,
   loading: PropTypes.bool.isRequired,
   size: PropTypes.string,
+  tableLocale: PropTypes.object,
 };
 
 TableItemChooser.defaultProps = {
+  expandedRowRender: null,
   size: 'small',
+  tableLocale: null,
 };
 
 export default TableItemChooser;
