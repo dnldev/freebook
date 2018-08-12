@@ -2,6 +2,8 @@ import LocalizedStrings from 'react-localization';
 
 const strings = new LocalizedStrings({
   en: {
+    ebookName: 'Ebook Name',
+    headerTitle: 'Freebook',
     search: 'Search',
     select: 'Select',
     send: 'Send',
