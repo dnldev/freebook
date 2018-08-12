@@ -115,7 +115,7 @@ class FetchEbooksProvider extends PureComponent {
 
   getFileLabels() {
     return Object.values(this.selectedFiles).map(
-      ({ extension, title }) => `${title} (${extension})`
+      ({ extension, title }) => `${title.slice(0, 20)}...\n(${extension})`
     );
   }
 
