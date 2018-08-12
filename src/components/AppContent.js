@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Layout } from 'antd';
 
+import ClickableIcons from './ClickableIcons';
 import SearchBar from './SearchBar';
 import TableItemChooser from './TableItemChooser';
 
@@ -28,6 +29,14 @@ const AppContent = ({ context }) => {
       </Header>
       <Content style={styles.content}>
         <SearchBar name={strings.ebookName} send={context.fetchEbookList} />
+        {context.fileLabels && (
+          <ClickableIcons
+            clicked={context.fileClicked}
+            iconType="file"
+            labels={context.fileLabels}
+          />
+        )}
+
         <TableItemChooser
           buttonText={strings.select}
           columns={context.columns}
