@@ -12,7 +12,7 @@ module.exports = {
   rules: {
     indent: ['error', 2],
     'no-console': 1,
-    quotes: ['error', 'single'],
+    quotes: ['warn', 'single'],
     semi: ['error', 'always'],
   },
 };
