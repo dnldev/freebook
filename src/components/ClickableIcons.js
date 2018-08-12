@@ -8,16 +8,24 @@ const styles = {
     marginTop: 8,
   },
   icon: {
+    cursor: 'pointer',
     fontSize: '5em',
+    textAlign: 'center',
+    width: '100%',
+  },
+  label: {
+    textAlign: 'center',
+    whiteSpace: 'pre-line',
+    width: '100%',
   },
 };
 
 const ClickableIcons = ({ clicked, iconType, labels }) => (
-  <Row style={styles.root}>
-    {labels.map((filename, i) => (
-      <Col key={i} span={6}>
+  <Row style={styles.root} type="flex" justify="space-between">
+    {labels.map((label, i) => (
+      <Col key={i} xs={12} sm={8} md={6} lg={4}>
         <Icon style={styles.icon} type={iconType} onClick={() => clicked(i)} />
-        <p style={{ align: 'center' }}>{filename}</p>
+        <p style={styles.label}>{label}</p>
       </Col>
     ))}
   </Row>
