@@ -3,13 +3,20 @@ import PropTypes from 'prop-types';
 
 import { Button, Input } from 'antd';
 
-import strings from '../localization/app-locale';
-
 import { camelToTitleCase } from '../utils';
 
 const FIELD_TYPES = Object.freeze({
   TEXT: 'text',
 });
+
+const styles = {
+  root: {
+    margin: '8px 0',
+  },
+  button: {
+    marginTop: 4,
+  },
+};
 
 class Config extends PureComponent {
   constructor(props) {
@@ -35,9 +42,11 @@ class Config extends PureComponent {
   sendConfig = () => this.props.send(this.state);
 
   render() {
+    const { buttonText, inputs } = this.props;
+
     return (
-      <div>
-        {this.props.inputs.map(({ fieldName, fieldType }) => {
+      <div style={styles.root}>
+        {inputs.map(({ fieldName, fieldType }) => {
           if (fieldType === FIELD_TYPES.TEXT) {
             return (
               <Input
@@ -53,8 +62,8 @@ class Config extends PureComponent {
           }
         })}
 
-        <Button type="primary" onClick={this.sendConfig}>
-          {strings.search}
+        <Button style={styles.button} type="primary" onClick={this.sendConfig}>
+          {buttonText}
         </Button>
       </div>
     );
@@ -62,6 +71,7 @@ class Config extends PureComponent {
 }
 
 Config.propTypes = {
+  buttonText: PropTypes.string.isRequired,
   inputs: PropTypes.arrayOf(
     PropTypes.shape({
       fieldName: PropTypes.string.isRequired,
