@@ -15,6 +15,7 @@ class FetchEbooksProvider extends PureComponent {
   state = {
     columns: this.getColumnsArray('Title', 'Author', 'Extension'),
     expandedRowRender: this.expandedRowRender,
+    fileLabels: [],
     inputs: [
       {
         fieldName: 'ebookName',
@@ -27,6 +28,8 @@ class FetchEbooksProvider extends PureComponent {
     searchLoading: false,
   };
 
+  selectedFiles = [];
+
   // searchResultData = [];
 
   constructor(props) {
@@ -34,10 +37,18 @@ class FetchEbooksProvider extends PureComponent {
 
     this.state.ebooksChosen = this.ebooksChosen.bind(this);
     this.state.fetchEbookList = this.fetchEbookList.bind(this);
+    this.state.fileClicked = this.fileClicked.bind(this);
   }
 
   ebooksChosen(chosenIndexes) {
-    chosenIndexes.forEach(index => console.log(this.searchResultData[index]));
+    this.selectedFiles = chosenIndexes.map(index => {
+      const { title, extension, md5 } = this.searchResultData[index];
+      return { title, extension, md5 };
+    });
+
+    this.setState({
+      fileLabels: this.getFileLabels(),
+    });
   }
 
   expandedRowRender(record) {
@@ -78,6 +89,10 @@ class FetchEbooksProvider extends PureComponent {
     });
   }
 
+  fileClicked(index) {
+    console.log(this.selectedFiles[index]);
+  }
+
   getColumnsArray(...columns) {
     return columns.map(column => {
       if (typeof column === 'object') return column;
@@ -96,6 +111,12 @@ class FetchEbooksProvider extends PureComponent {
         },
       };
     });
+  }
+
+  getFileLabels() {
+    return Object.values(this.selectedFiles).map(
+      ({ extension, title }) => `${title} (${extension})`
+    );
   }
 
   parseSearchResults(data) {
