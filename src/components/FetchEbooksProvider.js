@@ -7,11 +7,14 @@ import { EbookProviderContext } from '../context';
 
 import testData from '../testdata';
 
+import { bytesInMBs } from '../utils';
+
 class FetchEbooksProvider extends PureComponent {
   searchResultData = testData;
 
   state = {
-    columns: this.getColumnsArray('Title', 'Extension', 'Pages', 'Year'),
+    columns: this.getColumnsArray('Title', 'Author', 'Extension'),
+    expandedRowRender: this.expandedRowRender,
     inputs: [
       {
         fieldName: 'ebookName',
@@ -37,10 +40,18 @@ class FetchEbooksProvider extends PureComponent {
     chosenIndexes.forEach(index => console.log(this.searchResultData[index]));
   }
 
-  fetchEbookList(searchConfig) {
-    this.toggleSearchLoading();
+  expandedRowRender(record) {
+    return (
+      <React.Fragment>
+        <p style={{ margin: 0 }}>Author: {record.author}</p>
+        <p style={{ margin: 0 }}>Size: {bytesInMBs(record.filesize)} MB</p>
+        <p style={{ margin: 0 }}>Year: {record.year}</p>
+      </React.Fragment>
+    );
+  }
 
-    const { ebookName } = searchConfig;
+  fetchEbookList(ebookName) {
+    this.toggleSearchLoading();
 
     const options = {
       mirror: 'http://libgen.io',
@@ -78,17 +89,19 @@ class FetchEbooksProvider extends PureComponent {
         title: columnTitle,
         dataIndex: columnKey,
         key: columnKey,
+        sorter: (a, b) => {
+          if (a[columnKey] === b[columnKey]) return 0;
+
+          return a[columnKey] < b[columnKey] ? -1 : 1;
+        },
       };
     });
   }
 
   parseSearchResults(data) {
-    return data.map(({ title, year, extension, pages }, index) => ({
+    return data.map((entry, index) => ({
       key: index,
-      title,
-      extension,
-      pages,
-      year,
+      ...entry,
     }));
   }
 
