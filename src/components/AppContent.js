@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { StyleSheet, css } from 'aphrodite';
 
-import { Layout } from 'antd';
+import { Button, Layout } from 'antd';
 
 import ClickableIcons from './ClickableIcons';
 import SearchBar from './SearchBar';
@@ -34,13 +34,17 @@ const AppContent = ({ context }) => {
       <Header className={css(styles.header)}>{strings.headerTitle}</Header>
       <Content className={css(styles.content)}>
         <SearchBar name={strings.ebookName} send={context.fetchEbookList} />
-        {context.fileLabels && (
-          <ClickableIcons
-            clicked={context.fileClicked}
-            iconType="file"
-            labels={context.fileLabels}
-          />
-        )}
+        <Button
+          loading={context.downloadLoading}
+          onClick={context.bulkDownload}
+        >
+          {strings.bulkDownload}
+        </Button>
+        <ClickableIcons
+          clickEvent={context.downloadFile}
+          iconType="file"
+          labels={context.fileLabels}
+        />
 
         <TableItemChooser
           buttonText={strings.select}
