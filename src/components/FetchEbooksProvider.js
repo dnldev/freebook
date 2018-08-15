@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
+import axios from 'axios';
 import libgen from 'libgen';
 
 import { EbookProviderContext } from '../context';
@@ -12,6 +13,7 @@ class FetchEbooksProvider extends PureComponent {
 
   state = {
     columns: this.getColumnsArray('Title', 'Author', 'Extension'),
+    downloadLoading: false,
     expandedRowRender: this.expandedRowRender,
     fileLabels: [],
     inputs: [
@@ -26,6 +28,7 @@ class FetchEbooksProvider extends PureComponent {
     searchLoading: false,
   };
 
+  mirror = '';
   selectedFiles = [];
 
   // searchResultData = [];
@@ -33,9 +36,38 @@ class FetchEbooksProvider extends PureComponent {
   constructor(props) {
     super(props);
 
+    this.setMirror();
+
+    this.state.bulkDownload = this.bulkDownload.bind(this);
+    this.state.downloadFile = this.downloadFile.bind(this);
     this.state.ebooksChosen = this.ebooksChosen.bind(this);
     this.state.fetchEbookList = this.fetchEbookList.bind(this);
-    this.state.fileClicked = this.fileClicked.bind(this);
+  }
+
+  bulkDownload() {
+    this.toggleDownloadLoading();
+    Promise.all(this.selectedFiles.map((_, i) => this.downloadFile(i)))
+      .then(() => this.toggleDownloadLoading())
+      .catch(err => console.log(err));
+  }
+
+  downloadFile(index) {
+    const openLinkInNewTab = link => window.open(link, '_blank');
+    const selectedFile = this.selectedFiles[index];
+    console.log(selectedFile);
+
+    return new Promise((resolve, reject) =>
+      axios
+        .get('http://libgen.io/get.php?md5=' + selectedFile.md5)
+        .then(response => {
+          const link = this.getLink(response.data);
+
+          openLinkInNewTab(link);
+
+          resolve();
+        })
+        .catch(err => reject(err))
+    );
   }
 
   ebooksChosen(chosenIndexes) {
@@ -82,10 +114,6 @@ class FetchEbooksProvider extends PureComponent {
     });
   }
 
-  fileClicked(index) {
-    console.log(this.selectedFiles[index]);
-  }
-
   getColumnsArray(...columns) {
     return columns.map(column => {
       if (typeof column === 'object') return column;
@@ -106,22 +134,37 @@ class FetchEbooksProvider extends PureComponent {
     });
   }
 
-  getFileLabels() {
-    return Object.values(this.selectedFiles).map(
+  getFileLabels = () =>
+    Object.values(this.selectedFiles).map(
       ({ extension, title }) => `${title.slice(0, 20)}...\n(${extension})`
+    );
+
+  getLink(responseData) {
+    const beforeLink = "<a href='";
+    const afterLink = "'><h2>GET</h2>";
+
+    return responseData.slice(
+      responseData.search(beforeLink) + beforeLink.length,
+      responseData.search(afterLink)
     );
   }
 
-  parseSearchResults(data) {
-    return data.map((entry, index) => ({
+  parseSearchResults = data =>
+    data.map((entry, index) => ({
       key: index,
       ...entry,
     }));
-  }
 
-  toggleSearchLoading() {
-    this.toggleStateBool('searchLoading');
-  }
+  setMirror = () =>
+    libgen.mirror((err, url) => {
+      if (err) console.log(err);
+
+      this.mirror = url;
+    });
+
+  toggleDownloadLoading = () => this.toggleStateBool('downloadLoading');
+
+  toggleSearchLoading = () => this.toggleStateBool('searchLoading');
 
   toggleStateBool = key =>
     this.setState(prevState => ({ [key]: !prevState[key] }));
