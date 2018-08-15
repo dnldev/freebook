@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
+import { StyleSheet, css } from 'aphrodite';
+
 import { Button, Input } from 'antd';
 
 import { camelToTitleCase } from '../utils';
@@ -8,15 +10,6 @@ import { camelToTitleCase } from '../utils';
 const FIELD_TYPES = Object.freeze({
   TEXT: 'text',
 });
-
-const styles = {
-  root: {
-    margin: '8px 0',
-  },
-  button: {
-    marginTop: 4,
-  },
-};
 
 class Config extends PureComponent {
   constructor(props) {
@@ -45,7 +38,7 @@ class Config extends PureComponent {
     const { buttonText, inputs } = this.props;
 
     return (
-      <div style={styles.root}>
+      <div className={css(styles.root)}>
         {inputs.map(({ fieldName, fieldType }) => {
           if (fieldType === FIELD_TYPES.TEXT) {
             return (
@@ -62,13 +55,26 @@ class Config extends PureComponent {
           }
         })}
 
-        <Button style={styles.button} type="primary" onClick={this.sendConfig}>
+        <Button
+          className={css(styles.button)}
+          type="primary"
+          onClick={this.sendConfig}
+        >
           {buttonText}
         </Button>
       </div>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  root: {
+    margin: '8px 0',
+  },
+  button: {
+    marginTop: 4,
+  },
+});
 
 Config.propTypes = {
   buttonText: PropTypes.string.isRequired,

@@ -1,22 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { StyleSheet, css } from 'aphrodite';
+
 import { Input } from 'antd';
 const { Search } = Input;
-
-const styles = {
-  root: {
-    margin: '8px 0',
-  },
-  button: {
-    marginTop: 4,
-  },
-};
 
 const SearchBar = ({ buttonText, name, send, size }) => {
   return (
     <Search
-      style={styles.root}
+      className={css(styles.root)}
       autoFocus
       placeholder={name}
       enterButton={buttonText}
@@ -25,6 +18,12 @@ const SearchBar = ({ buttonText, name, send, size }) => {
     />
   );
 };
+
+const styles = StyleSheet.create({
+  root: {
+    margin: '8px 0',
+  },
+});
 
 SearchBar.propTypes = {
   buttonText: PropTypes.string,

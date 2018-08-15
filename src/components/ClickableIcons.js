@@ -1,9 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { StyleSheet, css } from 'aphrodite';
+
 import { Col, Icon, Row } from 'antd';
 
-const styles = {
+const ClickableIcons = ({ clicked, iconType, labels }) => (
+  <Row className={css(styles.root)} type="flex" justify="space-between">
+    {labels.map((label, i) => (
+      <Col key={i} xs={12} sm={8} md={6} lg={4}>
+        <Icon
+          className={css(styles.icon)}
+          type={iconType}
+          onClick={() => clicked(i)}
+        />
+        <p className={css(styles.label)}>{label}</p>
+      </Col>
+    ))}
+  </Row>
+);
+
+const styles = StyleSheet.create({
   root: {
     marginTop: 8,
   },
@@ -18,18 +35,7 @@ const styles = {
     whiteSpace: 'pre-line',
     width: '100%',
   },
-};
-
-const ClickableIcons = ({ clicked, iconType, labels }) => (
-  <Row style={styles.root} type="flex" justify="space-between">
-    {labels.map((label, i) => (
-      <Col key={i} xs={12} sm={8} md={6} lg={4}>
-        <Icon style={styles.icon} type={iconType} onClick={() => clicked(i)} />
-        <p style={styles.label}>{label}</p>
-      </Col>
-    ))}
-  </Row>
-);
+});
 
 ClickableIcons.propTypes = {
   labels: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
