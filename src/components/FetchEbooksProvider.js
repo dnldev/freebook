@@ -39,15 +39,20 @@ class FetchEbooksProvider extends PureComponent {
   }
 
   ebooksChosen(chosenIndexes) {
-    this.selectedFiles = chosenIndexes.map(index => {
+    chosenIndexes.forEach(index => {
       const { title, extension, md5 } = this.searchResultData[index];
-      return { title, extension, md5 };
+      if (!this.fileSelected(md5)) {
+        this.selectedFiles.push({ title, extension, md5 });
+      }
     });
 
     this.setState({
       fileLabels: this.getFileLabels(),
     });
   }
+
+  fileSelected = md5Search =>
+    !!this.selectedFiles.find(({ md5 }) => md5 === md5Search);
 
   fetchEbookList(ebookName) {
     this.toggleSearchLoading();
