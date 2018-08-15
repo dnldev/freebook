@@ -2,6 +2,7 @@ import LocalizedStrings from 'react-localization';
 
 const strings = new LocalizedStrings({
   en: {
+    bulkDownload: 'Bulk Download',
     ebookName: 'Ebook Name',
     headerTitle: 'Freebook',
     search: 'Search',
@@ -15,6 +16,7 @@ const strings = new LocalizedStrings({
     },
   },
   de: {
+    bulkDownload: 'Alle Herunterladen',
     search: 'Suchen',
     select: 'Auswählen',
     send: 'Senden',
