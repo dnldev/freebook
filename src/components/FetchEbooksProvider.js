@@ -36,12 +36,14 @@ class FetchEbooksProvider extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.setMirror();
-
     this.state.bulkDownload = this.bulkDownload.bind(this);
     this.state.downloadFile = this.downloadFile.bind(this);
     this.state.ebooksChosen = this.ebooksChosen.bind(this);
     this.state.fetchEbookList = this.fetchEbookList.bind(this);
+  }
+
+  componentDidMount() {
+    this.setMirror();
   }
 
   bulkDownload() {
@@ -58,7 +60,7 @@ class FetchEbooksProvider extends PureComponent {
 
     return new Promise((resolve, reject) =>
       axios
-        .get('http://libgen.io/get.php?md5=' + selectedFile.md5)
+        .get(this.mirror + '/get.php?md5=' + selectedFile.md5)
         .then(response => {
           const link = this.getLink(response.data);
 
@@ -134,10 +136,11 @@ class FetchEbooksProvider extends PureComponent {
     });
   }
 
-  getFileLabels = () =>
-    Object.values(this.selectedFiles).map(
+  getFileLabels() {
+    return Object.values(this.selectedFiles).map(
       ({ extension, title }) => `${title.slice(0, 20)}...\n(${extension})`
     );
+  }
 
   getLink(responseData) {
     const beforeLink = "<a href='";
@@ -149,11 +152,12 @@ class FetchEbooksProvider extends PureComponent {
     );
   }
 
-  parseSearchResults = data =>
-    data.map((entry, index) => ({
+  parseSearchResults(data) {
+    return data.map((entry, index) => ({
       key: index,
       ...entry,
     }));
+  }
 
   setMirror = () =>
     libgen.mirror((err, url) => {
