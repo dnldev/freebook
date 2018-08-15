@@ -19,8 +19,9 @@ const AppContent = ({ context }) => {
   const tableExpandedRowRender = record => (
     <React.Fragment>
       <p className={css(styles.expandedRowParagraph)}>
-        Author: {record.author}
+        Language: {record.language}
       </p>
+      <p className={css(styles.expandedRowParagraph)}>Pages: {record.pages}</p>
       <p className={css(styles.expandedRowParagraph)}>
         Size: {bytesInMBs(record.filesize)} MB
       </p>
