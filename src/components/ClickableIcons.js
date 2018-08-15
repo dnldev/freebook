@@ -5,17 +5,22 @@ import { StyleSheet, css } from 'aphrodite';
 
 import { Col, Icon, Row } from 'antd';
 
-const ClickableIcons = ({ clicked, iconType, labels }) => (
+const ClickableIcon = ({ clickEvent, iconType, label }) => (
+  <Col xs={12} sm={8} md={6} lg={4}>
+    <Icon className={css(styles.icon)} type={iconType} onClick={clickEvent} />
+    <p className={css(styles.label)}>{label}</p>
+  </Col>
+);
+
+const ClickableIcons = ({ clickEvent, iconType, labels }) => (
   <Row className={css(styles.root)} type="flex" justify="space-between">
     {labels.map((label, i) => (
-      <Col key={i} xs={12} sm={8} md={6} lg={4}>
-        <Icon
-          className={css(styles.icon)}
-          type={iconType}
-          onClick={() => clicked(i)}
-        />
-        <p className={css(styles.label)}>{label}</p>
-      </Col>
+      <ClickableIcon
+        key={i}
+        clickEvent={() => clickEvent(i)}
+        iconType={iconType}
+        label={labels[i]}
+      />
     ))}
   </Row>
 );
@@ -37,9 +42,15 @@ const styles = StyleSheet.create({
   },
 });
 
+ClickableIcon.propTypes = {
+  clickEvent: PropTypes.func.isRequired,
+  iconType: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+};
+
 ClickableIcons.propTypes = {
   labels: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
-  clicked: PropTypes.func.isRequired,
+  clickEvent: PropTypes.func.isRequired,
   iconType: PropTypes.string.isRequired,
 };
 
