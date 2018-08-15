@@ -27,5 +27,6 @@
     "eslint": "^5.3.0",
     "eslint-plugin-react": "^7.10.0",
     "react-app-rewired": "^1.5.2"
-  }
+  },
+  "homepage": "https://danieldev.io/freebook"
 }
