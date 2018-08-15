@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "antd": "^3.8.0",
+    "aphrodite": "^2.2.2",
     "leven-sort": "^1.1.3",
     "libgen": "^1.0.0",
     "react": "^16.4.2",
