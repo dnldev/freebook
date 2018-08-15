@@ -7,8 +7,6 @@ import { EbookProviderContext } from '../context';
 
 import testData from '../testdata';
 
-import { bytesInMBs } from '../utils';
-
 class FetchEbooksProvider extends PureComponent {
   searchResultData = testData;
 
@@ -49,16 +47,6 @@ class FetchEbooksProvider extends PureComponent {
     this.setState({
       fileLabels: this.getFileLabels(),
     });
-  }
-
-  expandedRowRender(record) {
-    return (
-      <React.Fragment>
-        <p style={{ margin: 0 }}>Author: {record.author}</p>
-        <p style={{ margin: 0 }}>Size: {bytesInMBs(record.filesize)} MB</p>
-        <p style={{ margin: 0 }}>Year: {record.year}</p>
-      </React.Fragment>
-    );
   }
 
   fetchEbookList(ebookName) {

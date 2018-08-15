@@ -1,13 +1,9 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import { Button, Table } from 'antd';
+import { StyleSheet, css } from 'aphrodite';
 
-const styles = {
-  button: {
-    marginBottom: 4,
-  },
-};
+import { Button, Table } from 'antd';
 
 class TableItemChooser extends PureComponent {
   state = {
@@ -41,7 +37,7 @@ class TableItemChooser extends PureComponent {
     return (
       <React.Fragment>
         <Button
-          style={styles.button}
+          className={css(styles.button)}
           disabled={!hasSelected}
           loading={loading}
           type="primary"
@@ -63,6 +59,12 @@ class TableItemChooser extends PureComponent {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  button: {
+    marginBottom: 4,
+  },
+});
 
 TableItemChooser.propTypes = {
   buttonText: PropTypes.string.isRequired,
