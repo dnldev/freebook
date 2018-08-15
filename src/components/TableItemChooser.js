@@ -40,7 +40,6 @@ class TableItemChooser extends PureComponent {
           className={css(styles.button)}
           disabled={!hasSelected}
           loading={loading}
-          type="primary"
           onClick={this.sendChosenItems}
         >
           {buttonText}
